@@ -12,12 +12,12 @@ void UGASAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UGASAttributeSetBase, Health, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME(UGASAttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME(UGASAttributeSetBase, HealthRegenRate, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME(UGASAttributeSetBase, Stamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME(UGASAttributeSetBase, MaxStamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME(UGASAttributeSetBase, StaminaRegenRate, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, HealthRegenRate, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, Stamina, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, MaxStamina, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UGASAttributeSetBase, StaminaRegenRate, COND_None, REPNOTIFY_Always);
 }
 
 void UGASAttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)

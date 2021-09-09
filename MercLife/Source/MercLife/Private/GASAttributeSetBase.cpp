@@ -49,3 +49,8 @@ void UGASAttributeSetBase::OnRep_StaminaRegenRate(const FGameplayAttributeData& 
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSetBase, StaminaRegenRate, OldStaminaRegenRate);
 }
+
+void UGASAttributeSetBase::OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGASAttributeSetBase, MoveSpeed, OldMoveSpeed);
+}

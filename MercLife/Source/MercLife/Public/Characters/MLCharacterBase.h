@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "MercLife/MercLife.h"
 #include "MLCharacterBase.generated.h"
 
@@ -25,7 +26,7 @@ public:
 
 	// Switch on AbilityID to return ability level
 	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase")
-	virtual int32 GetAbilityLevel(EGASAbilityInputID AbilityID) const;
+	virtual int32 GetAbilityLevel(EMLAbilityInputID AbilityID) const;
 	
 	// Removes all CharacterAbilities. Can only be called by the Server. Removing on the Server will remove from Client too.
 	virtual void RemoveCharacterAbilities();
@@ -67,6 +68,9 @@ public:
 	float GetMoveSpeedBaseValue() const;
 
 protected:
+	FGameplayTag DeadTag;
+	FGameplayTag EffectRemoveOnDeathTag;
+	
 	// Reference to the ASC. It will live on the PlayerState or here if the character doesn't have a PlayerState.
 	UPROPERTY()
 	class UGASAbilitySystemComponent* AbilitySystemComponent;

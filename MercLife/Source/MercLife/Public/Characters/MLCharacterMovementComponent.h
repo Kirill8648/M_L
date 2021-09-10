@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MLCharacterMovementComponent.generated.h"
 
@@ -65,9 +64,6 @@ public:
 
 	uint8 RequestToStartSprinting : 1;
 	uint8 RequestToStartADS : 1;
-
-	//TODO
-	FGameplayTag SOMETAGTODOSHIT;
 
 	virtual float GetMaxSpeed() const override;
 	virtual void UpdateFromCompressedFlags(uint8 Flags) override;

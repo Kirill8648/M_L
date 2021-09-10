@@ -9,14 +9,21 @@
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
-AMLCharacterBase::AMLCharacterBase(const class FObjectInitializer& ObjectInitializer):
-	Super(ObjectInitializer.SetDefaultSubobjectClass<UMLCharacterMovementComponent>(
-		ACharacter::CharacterMovementComponentName))
+AMLCharacterBase::AMLCharacterBase(const class FObjectInitializer& ObjectInitializer) :
+	Super(ObjectInitializer.SetDefaultSubobjectClass<UMLCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility,
-	                                                     ECollisionResponse::ECR_Overlap);
+	// TODO ----------------TEMPORARY-----------------
+	AbilitySystemComponent = CreateDefaultSubobject<UGASAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	AttributeSetBase = CreateDefaultSubobject<UGASAttributeSetBase>(TEXT("AttributeSetBase"));
+	// -----------------------TEMP--------------------
+	
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Overlap);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
 	// Pawn or PlayerController is responsible for this character actions
@@ -33,7 +40,7 @@ bool AMLCharacterBase::IsAlive() const
 	return GetHealth() > 0.0f;
 }
 
-int32 AMLCharacterBase::GetAbilityLevel(EGASAbilityInputID AbilityID) const
+int32 AMLCharacterBase::GetAbilityLevel(EMLAbilityInputID AbilityID) const
 {
 	//TODO
 	return 1;
@@ -145,10 +152,9 @@ void AMLCharacterBase::AddCharacterAbilities()
 	for (TSubclassOf<UGASGameplayAbilityBase>& StartupAbility : CharacterAbilities)
 	{
 		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(StartupAbility,
-		                                                         GetAbilityLevel(
-			                                                         StartupAbility.GetDefaultObject()->AbilityID),
-		                                                         static_cast<int32>(StartupAbility.GetDefaultObject()->
-			                                                         AbilityInputID), this));
+		                                                         GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID),
+		                                                         static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID),
+		                                                         this));
 	}
 
 	AbilitySystemComponent->bCharacterAbilitiesGiven = true;
@@ -173,12 +179,10 @@ void AMLCharacterBase::InitializeAttributes()
 	EffectContext.AddSourceObject(this);
 
 	//TODO change 1 to getLevel if we gonna have levels
-	FGameplayEffectSpecHandle GEHandle = AbilitySystemComponent->MakeOutgoingSpec(
-		DefaultAttributes, 1, EffectContext);
+	FGameplayEffectSpecHandle GEHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 1, EffectContext);
 	if (GEHandle.IsValid())
 	{
-		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(
-			*GEHandle.Data.Get());
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*GEHandle.Data.Get());
 	}
 }
 

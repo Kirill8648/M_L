@@ -10,9 +10,6 @@ UMLCharacterMovementComponent::UMLCharacterMovementComponent()
 {
 	SprintSpeedMultiplier = 1.4f;
 	ADSSpeedMultiplier = 0.8f;
-
-	//TODO
-	SOMETAGTODOSHIT = FGameplayTag::RequestGameplayTag("");
 }
 
 float UMLCharacterMovementComponent::GetMaxSpeed() const
@@ -115,8 +112,7 @@ uint8 UMLCharacterMovementComponent::FMLSavedMove::GetCompressedFlags() const
 	return Result;
 }
 
-bool UMLCharacterMovementComponent::FMLSavedMove::CanCombineWith(const FSavedMovePtr& NewMove,
-                                                                 ACharacter* Character, float MaxDelta) const
+bool UMLCharacterMovementComponent::FMLSavedMove::CanCombineWith(const FSavedMovePtr& NewMove, ACharacter* Character, float MaxDelta) const
 {
 	// Set which moves can be combined together. This will depend on the bit flags that are used.
 	if (SavedRequestToStartSprinting != ((FMLSavedMove*)NewMove.Get())->SavedRequestToStartSprinting)
@@ -128,14 +124,12 @@ bool UMLCharacterMovementComponent::FMLSavedMove::CanCombineWith(const FSavedMov
 	return Super::CanCombineWith(NewMove, Character, MaxDelta);
 }
 
-void UMLCharacterMovementComponent::FMLSavedMove::SetMoveFor(ACharacter* Character, float InDeltaTime,
-                                                             FVector const& NewAccel,
+void UMLCharacterMovementComponent::FMLSavedMove::SetMoveFor(ACharacter* Character, float InDeltaTime, FVector const& NewAccel,
                                                              FNetworkPredictionData_Client_Character& ClientData)
 {
 	Super::SetMoveFor(Character, InDeltaTime, NewAccel, ClientData);
 
-	UMLCharacterMovementComponent* CharacterMovement = Cast<UMLCharacterMovementComponent>(
-		Character->GetCharacterMovement());
+	UMLCharacterMovementComponent* CharacterMovement = Cast<UMLCharacterMovementComponent>(Character->GetCharacterMovement());
 	if (CharacterMovement)
 	{
 		SavedRequestToStartSprinting = CharacterMovement->RequestToStartSprinting;
@@ -147,15 +141,14 @@ void UMLCharacterMovementComponent::FMLSavedMove::PrepMoveFor(ACharacter* Charac
 {
 	Super::PrepMoveFor(Character);
 
-	UMLCharacterMovementComponent* CharacterMovement = Cast<UMLCharacterMovementComponent>(
-		Character->GetCharacterMovement());
+	UMLCharacterMovementComponent* CharacterMovement = Cast<UMLCharacterMovementComponent>(Character->GetCharacterMovement());
 	if (CharacterMovement)
 	{
 	}
 }
 
 UMLCharacterMovementComponent::FMLNetworkPredictionData_Client::FMLNetworkPredictionData_Client(
-	const UCharacterMovementComponent& ClientMovement): Super(ClientMovement)
+	const UCharacterMovementComponent& ClientMovement) : Super(ClientMovement)
 {
 }
 

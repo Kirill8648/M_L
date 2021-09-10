@@ -7,7 +7,7 @@
 
 
 UENUM(BlueprintType)
-enum class EGASAbilityInputID : uint8
+enum class EMLAbilityInputID : uint8
 {
 	// 0 None
 	None UMETA(DisplayName = "None"),

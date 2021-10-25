@@ -37,7 +37,8 @@ UAbilitySystemComponent* AMLCharacterBase::GetAbilitySystemComponent() const
 
 bool AMLCharacterBase::IsAlive() const
 {
-	return GetHealth() > 0.0f;
+	//TODO
+	return 1/*GetHealth() > 0.0f*/;
 }
 
 int32 AMLCharacterBase::GetAbilityLevel(EMLAbilityInputID AbilityID) const

@@ -8,7 +8,7 @@
 #include "Characters/Abilities/MLAbilitySystemGlobals.h"
 #include "Kismet/KismetMathLibrary.h"
 
-AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitializer): Super(ObjectInitializer)
+AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	BaseTurnRate = 45.0f;
 	BaseLookUpRate = 45.0f;
@@ -28,7 +28,7 @@ AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitial
 	FirstPersonMesh->SetCollisionProfileName(FName("NoCollision"));
 	FirstPersonMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
 	FirstPersonMesh->CastShadow = false;
-	FirstPersonMesh->SetVisibility(false, true);
+	FirstPersonMesh->SetVisibility(true, true);
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -115,13 +115,19 @@ void AMLHeroCharacter::Turn(float Value)
 void AMLHeroCharacter::MoveForward(float Value)
 {
 	if (IsAlive())
+	{
+		//AddMovementInput(GetActorForwardVector(), Value);
 		AddMovementInput(UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
+	}
 }
 
 void AMLHeroCharacter::MoveRight(float Value)
 {
 	if (IsAlive())
+	{
+		//AddMovementInput(GetActorRightVector(), Value);
 		AddMovementInput(UKismetMathLibrary::GetRightVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
+	}
 }
 
 void AMLHeroCharacter::OnRep_PlayerState()

@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Characters/Abilities/MLAbilitySystemGlobals.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapons/MLWeapon.h"
 
 AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -27,7 +28,7 @@ AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitial
 	FirstPersonMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	FirstPersonMesh->SetCollisionProfileName(FName("NoCollision"));
 	FirstPersonMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
-	FirstPersonMesh->CastShadow = false;
+	//FirstPersonMesh->CastShadow = false;
 	FirstPersonMesh->SetVisibility(true, true);
 
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPose;
@@ -38,6 +39,62 @@ AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitial
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 	//TODO Create AI Controller 
 	//AIControllerClass = AGSHeroAIController::StaticClass();
+}
+
+USkeletalMeshComponent* AMLHeroCharacter::GetFirstPersonMesh()
+{
+	return FirstPersonMesh;
+}
+
+void AMLHeroCharacter::EquipWeapon(AMLWeapon* NewWeapon)
+{
+	SetCurrentWeapon(NewWeapon, CurrentWeapon);
+}
+
+void AMLHeroCharacter::NextWeapon()
+{
+	if (Weapons.Num() < 2)
+	{
+		return;
+	}
+
+	int32 CurrentWeaponIndex = Weapons.Find(CurrentWeapon);
+	UnEquipCurrentWeapon();
+
+	if (CurrentWeaponIndex == INDEX_NONE)
+	{
+		EquipWeapon(Weapons[0]);
+	}
+	else
+	{
+		EquipWeapon(Weapons[(CurrentWeaponIndex + 1) % Weapons.Num()]);
+	}
+}
+
+void AMLHeroCharacter::PreviousWeapon()
+{
+	if (Weapons.Num() < 2)
+	{
+		return;
+	}
+
+	int32 CurrentWeaponIndex = Weapons.Find(CurrentWeapon);
+	UnEquipCurrentWeapon();
+
+	if (CurrentWeaponIndex == INDEX_NONE)
+	{
+		EquipWeapon(Weapons[0]);
+	}
+	else
+	{
+		int32 IndexOfPrevWeapon = FMath::Abs(CurrentWeaponIndex - 1 + Weapons.Num()) % Weapons.Num();
+		EquipWeapon(Weapons[IndexOfPrevWeapon]);
+	}
+}
+
+FName AMLHeroCharacter::GetWeaponAttachPoint() const
+{
+	return WeaponAttachPoint;
 }
 
 void AMLHeroCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -85,6 +142,8 @@ void AMLHeroCharacter::BeginPlay()
 
 	StartingFirstPersonMeshLocation = FirstPersonMesh->GetRelativeLocation();
 
+	SpawnDefaultInventory();
+
 	//TODO Not finished BeginPlay in MLHeroCharacter
 }
 
@@ -99,7 +158,7 @@ void AMLHeroCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	//TODO Not finished PostInitializeComponents in MLHeroCharacter
-	GetWorldTimerManager().SetTimerForNextTick(this, &AMLHeroCharacter::SpawnDefaultInventory);
+	//GetWorldTimerManager().SetTimerForNextTick(this, &AMLHeroCharacter::SpawnDefaultInventory);
 }
 
 void AMLHeroCharacter::LookUp(float Value)
@@ -155,5 +214,81 @@ void AMLHeroCharacter::BindASCInput()
 
 void AMLHeroCharacter::SpawnDefaultInventory()
 {
-	//TODO Spawn default inventory
+	//TODO Not final method
+	int32 NumWeaponClasses = WeaponsDefaultInventory.Num();
+	for (int32 i = 0; i < NumWeaponClasses; i++)
+	{
+		if (!WeaponsDefaultInventory[i])
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s %s An empty item was added to the Array in blueprint"), *FString(__FUNCTION__), *GetName());
+			continue;
+		}
+
+		AMLWeapon* NewWeapon = GetWorld()->SpawnActorDeferred<AMLWeapon>(WeaponsDefaultInventory[i], FTransform::Identity, this,
+		                                                                 this, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		NewWeapon->FinishSpawning(FTransform::Identity);
+
+		bool bEquipFirstWeapon = i == 0;
+
+		Weapons.Add(NewWeapon);
+		NewWeapon->SetOwningCharacter(this);
+		NewWeapon->AddAbilities();
+
+		if (bEquipFirstWeapon)
+		{
+			EquipWeapon(NewWeapon);
+		}
+	}
+}
+
+void AMLHeroCharacter::SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWeapon)
+{
+	if (NewWeapon == LastWeapon)
+	{
+		return;
+	}
+
+	// Cancel active weapon abilities
+	if (AbilitySystemComponent)
+	{
+		FGameplayTagContainer AbilityTagsToCancel = FGameplayTagContainer(UMLAbilitySystemGlobals::MLGet().WeaponAbilityTag);
+		AbilitySystemComponent->CancelAbilities(&AbilityTagsToCancel);
+	}
+
+	UnEquipWeapon(LastWeapon);
+
+	if (NewWeapon)
+	{
+		// Controller changes
+
+		// TODO add support for AI
+
+		CurrentWeapon = NewWeapon;
+		CurrentWeapon->SetOwningCharacter(this);
+		CurrentWeapon->Equip();
+		
+		UAnimMontage* Equip1PMontage = NewWeapon->GetEquipMontage();
+		if (Equip1PMontage && GetFirstPersonMesh())
+		{
+			GetFirstPersonMesh()->GetAnimInstance()->Montage_Play(Equip1PMontage);
+		}
+	}
+	else
+	{
+		UnEquipCurrentWeapon();
+	}
+}
+
+void AMLHeroCharacter::UnEquipWeapon(AMLWeapon* WeaponToUnEquip)
+{
+	if (WeaponToUnEquip)
+	{
+		WeaponToUnEquip->UnEquip();
+	}
+}
+
+void AMLHeroCharacter::UnEquipCurrentWeapon()
+{
+	UnEquipWeapon(CurrentWeapon);
+	CurrentWeapon = nullptr;
 }

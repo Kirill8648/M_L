@@ -16,9 +16,9 @@ AMLCharacterBase::AMLCharacterBase(const class FObjectInitializer& ObjectInitial
 
 	// TODO ----------------TEMPORARY-----------------
 	AbilitySystemComponent = CreateDefaultSubobject<UGASAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AbilitySystemComponent->SetIsReplicated(true);
+	//AbilitySystemComponent->SetIsReplicated(true);
 
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	//AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSetBase = CreateDefaultSubobject<UGASAttributeSetBase>(TEXT("AttributeSetBase"));
 	// -----------------------TEMP--------------------
@@ -144,11 +144,11 @@ void AMLCharacterBase::BeginPlay()
 void AMLCharacterBase::AddCharacterAbilities()
 {
 	// Grant abilities, but only on the server
-	if (GetLocalRole() != ROLE_Authority || !IsValid(AbilitySystemComponent) || AbilitySystemComponent->
+	/*if (GetLocalRole() != ROLE_Authority || !IsValid(AbilitySystemComponent) || AbilitySystemComponent->
 		bCharacterAbilitiesGiven)
 	{
 		return;
-	}
+	}*/
 
 	for (TSubclassOf<UGASGameplayAbilityBase>& StartupAbility : CharacterAbilities)
 	{
@@ -189,11 +189,11 @@ void AMLCharacterBase::InitializeAttributes()
 
 void AMLCharacterBase::AddStartupEffects()
 {
-	if (GetLocalRole() != ROLE_Authority || !IsValid(AbilitySystemComponent) || AbilitySystemComponent->
+	/*if (GetLocalRole() != ROLE_Authority || !IsValid(AbilitySystemComponent) || AbilitySystemComponent->
 		bStartupEffectsApplied)
 	{
 		return;
-	}
+	}*/
 
 	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);

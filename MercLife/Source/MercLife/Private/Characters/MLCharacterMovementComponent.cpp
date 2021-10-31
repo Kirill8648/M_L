@@ -8,7 +8,7 @@
 
 UMLCharacterMovementComponent::UMLCharacterMovementComponent()
 {
-	SprintSpeedMultiplier = 1.4f;
+	SprintSpeedMultiplier = 1.5f;
 	ADSSpeedMultiplier = 0.8f;
 }
 

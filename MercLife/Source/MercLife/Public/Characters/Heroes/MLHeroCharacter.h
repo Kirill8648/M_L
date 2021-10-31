@@ -6,6 +6,8 @@
 #include "Characters/MLCharacterBase.h"
 #include "MLHeroCharacter.generated.h"
 
+class AMLWeapon;
+
 /**
 * The base Character class for the game. Everything with an AbilitySystemComponent in this game will inherit from this class.
 * This class should not be instantiated and instead subclassed.
@@ -23,6 +25,20 @@ public:
 	FGameplayTag CurrentWeaponLeftTag;
 	FGameplayTag CurrentWeaponBothTag;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="MercLife|MLHeroCharacter")
+	USkeletalMeshComponent* GetFirstPersonMesh();
+
+	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
+	void EquipWeapon(AMLWeapon* NewWeapon);
+
+	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
+	virtual void NextWeapon();
+
+	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
+	virtual void PreviousWeapon();
+
+	FName GetWeaponAttachPoint() const;
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Called to bind functionality to input
@@ -31,7 +47,17 @@ public:
 	// Only called on the Server. Calls before Server's AcknowledgePossession.
 	virtual void PossessedBy(AController* NewController) override;
 
+	// TEMPORARY
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="MercLife|TEMPINVENTORY")
+	TArray<TSubclassOf<AMLWeapon>> WeaponsDefaultInventory;
+
 protected:
+	//TEMPORARY
+	UPROPERTY()
+	AMLWeapon* CurrentWeapon;
+	UPROPERTY(BlueprintReadOnly, Category="MercLife|TEMPINVENTORY")
+	TArray<AMLWeapon*> Weapons;
+
 	UPROPERTY(BlueprintReadOnly, Category = "MercLife|MLHeroCharacter")
 	FVector StartingThirdPersonMeshLocation;
 
@@ -54,13 +80,16 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "MercLife|Camera")
 	float Default1PFOV;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Merclife|MLHeroCharacter")
+	FName WeaponAttachPoint;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "MercLife|Camera")
 	class UCameraComponent* FirstPersonCamera;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	USkeletalMeshComponent* FirstPersonMesh;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "MercLife|GSHeroCharacter")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "MercLife|MLHeroCharacter")
 	TSubclassOf<UGameplayEffect> DeathEffect;
 
 	// Called when the game starts or when spawned
@@ -88,6 +117,14 @@ protected:
 
 	// Server spawns default inventory
 	void SpawnDefaultInventory();
+
+	void SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWeapon);
+
+	// Unequips the specified weapon. Used when OnRep_CurrentWeapon fires.
+	void UnEquipWeapon(AMLWeapon* WeaponToUnEquip);
+
+	// Unequips the current weapon. Used if for example we drop the current weapon.
+	void UnEquipCurrentWeapon();
 
 	//void OnAbilityActivationFailed(const class UGameplayAbility* FailedAbility, const FGameplayTagContainer& FailTags);
 };

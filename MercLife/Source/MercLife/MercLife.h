@@ -24,12 +24,15 @@ enum class EMLAbilityInputID : uint8
 	// 4 Sprint
 	Sprint UMETA(DisplayName = "Sprint"),
 
-	// 5 Primary Attack / Primary Fire
-	PrimaryAttack UMETA(DisplayName = "Primary Attack / Primary Fire"),
+	// 5 RightHand Attack / BothHands ADS
+	RightHandAction UMETA(DisplayName = "RightHand Attack / BothHands ADS"),
 
-	// 6 Next Weapon
+	// 6 LeftHand Attack / BothHands Attack
+	LeftHandAction UMETA(DisplayName = "LeftHand Attack / BothHands Attack"),
+
+	// 7 Next Weapon
 	NextWeapon UMETA(DisplayName = "Next Weapon"),
 
-	// 7 Previous Weapon
+	// 8 Previous Weapon
 	PrevWeapon UMETA(DisplayName = "Previous Weapon")
 };

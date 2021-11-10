@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
 	virtual void PreviousWeapon();
 
+	UFUNCTION(BlueprintNativeEvent, Category="MercLife|Animation")
+	void ChangeLeftHandTransformInAnimBlueprint();
+
 	FName GetWeaponAttachPoint() const;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -57,6 +60,8 @@ protected:
 	AMLWeapon* CurrentWeapon;
 	UPROPERTY(BlueprintReadOnly, Category="MercLife|TEMPINVENTORY")
 	TArray<AMLWeapon*> Weapons;
+	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
+	AMLWeapon* GetCurrentWeapon();
 
 	UPROPERTY(BlueprintReadOnly, Category = "MercLife|MLHeroCharacter")
 	FVector StartingThirdPersonMeshLocation;

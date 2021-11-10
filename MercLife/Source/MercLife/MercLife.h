@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 
 
-
 UENUM(BlueprintType)
 enum class EMLAbilityInputID : uint8
 {
@@ -24,11 +23,11 @@ enum class EMLAbilityInputID : uint8
 	// 4 Sprint
 	Sprint UMETA(DisplayName = "Sprint"),
 
-	// 5 RightHand Attack / BothHands ADS
-	RightHandAction UMETA(DisplayName = "RightHand Attack / BothHands ADS"),
+	// 5 ADS
+	AimDownSights UMETA(DisplayName = "Aim Down Sights"),
 
-	// 6 LeftHand Attack / BothHands Attack
-	LeftHandAction UMETA(DisplayName = "LeftHand Attack / BothHands Attack"),
+	// 6 Primary Attack
+	PrimaryAttack UMETA(DisplayName = "Primary Attack"),
 
 	// 7 Next Weapon
 	NextWeapon UMETA(DisplayName = "Next Weapon"),

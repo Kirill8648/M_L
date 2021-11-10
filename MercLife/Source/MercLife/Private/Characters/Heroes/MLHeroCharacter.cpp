@@ -92,6 +92,11 @@ void AMLHeroCharacter::PreviousWeapon()
 	}
 }
 
+void AMLHeroCharacter::ChangeLeftHandTransformInAnimBlueprint_Implementation()
+{
+	UE_LOG(LogTemp, Error, TEXT("%s %s ChangeLeftHandTransformInAnimBlueprint are not implemented in blueprint instance"), *FString(__FUNCTION__), *GetName());
+}
+
 FName AMLHeroCharacter::GetWeaponAttachPoint() const
 {
 	return WeaponAttachPoint;
@@ -131,6 +136,11 @@ void AMLHeroCharacter::PossessedBy(AController* NewController)
 	AddCharacterAbilities();
 }
 
+AMLWeapon* AMLHeroCharacter::GetCurrentWeapon()
+{
+	return CurrentWeapon;
+}
+
 /**
 * On the Server, Possession happens before BeginPlay.
 * On the Client, BeginPlay happens before Possession.
@@ -142,7 +152,7 @@ void AMLHeroCharacter::BeginPlay()
 
 	StartingFirstPersonMeshLocation = FirstPersonMesh->GetRelativeLocation();
 
-	SpawnDefaultInventory();
+	//SpawnDefaultInventory();
 
 	//TODO Not finished BeginPlay in MLHeroCharacter
 }
@@ -158,7 +168,7 @@ void AMLHeroCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	//TODO Not finished PostInitializeComponents in MLHeroCharacter
-	//GetWorldTimerManager().SetTimerForNextTick(this, &AMLHeroCharacter::SpawnDefaultInventory);
+	GetWorldTimerManager().SetTimerForNextTick(this, &AMLHeroCharacter::SpawnDefaultInventory);
 }
 
 void AMLHeroCharacter::LookUp(float Value)
@@ -266,6 +276,8 @@ void AMLHeroCharacter::SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWea
 		CurrentWeapon = NewWeapon;
 		CurrentWeapon->SetOwningCharacter(this);
 		CurrentWeapon->Equip();
+		
+		ChangeLeftHandTransformInAnimBlueprint();
 		
 		UAnimMontage* Equip1PMontage = NewWeapon->GetEquipMontage();
 		if (Equip1PMontage && GetFirstPersonMesh())

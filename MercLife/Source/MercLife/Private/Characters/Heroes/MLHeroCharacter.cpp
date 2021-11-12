@@ -92,11 +92,6 @@ void AMLHeroCharacter::PreviousWeapon()
 	}
 }
 
-void AMLHeroCharacter::ChangeLeftHandTransformInAnimBlueprint_Implementation()
-{
-	UE_LOG(LogTemp, Error, TEXT("%s %s ChangeLeftHandTransformInAnimBlueprint are not implemented in blueprint instance"), *FString(__FUNCTION__), *GetName());
-}
-
 FName AMLHeroCharacter::GetWeaponAttachPoint() const
 {
 	return WeaponAttachPoint;
@@ -178,7 +173,7 @@ void AMLHeroCharacter::LookUp(float Value)
 
 void AMLHeroCharacter::Turn(float Value)
 {
-	if (IsAlive()) AddControllerYawInput(Value);
+	if (IsAlive())AddControllerYawInput(Value);
 }
 
 void AMLHeroCharacter::MoveForward(float Value)
@@ -195,6 +190,7 @@ void AMLHeroCharacter::MoveRight(float Value)
 	if (IsAlive())
 	{
 		//AddMovementInput(GetActorRightVector(), Value);
+		WeaponSwayMoveSide = Value;
 		AddMovementInput(UKismetMathLibrary::GetRightVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
 	}
 }
@@ -258,12 +254,24 @@ void AMLHeroCharacter::SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWea
 		return;
 	}
 
+	//GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+
 	// Cancel active weapon abilities
 	if (AbilitySystemComponent)
 	{
 		FGameplayTagContainer AbilityTagsToCancel = FGameplayTagContainer(UMLAbilitySystemGlobals::MLGet().WeaponAbilityTag);
 		AbilitySystemComponent->CancelAbilities(&AbilityTagsToCancel);
 	}
+
+	/*UAnimMontage* Equip1PMontage = NewWeapon->GetEquipMontage();
+	if (Equip1PMontage && GetFirstPersonMesh())
+	{
+		GetFirstPersonMesh()->GetAnimInstance()->Montage_Play(Equip1PMontage);
+	}
+
+	TimerDel.BindUFunction(this, FName("SetCurrentWeaponAfterDelay"), NewWeapon, LastWeapon);
+	GetWorldTimerManager().SetTimer(TimerHandle, TimerDel, 1.f/*Equip1PMontage->GetPlayLength() / 2#1#, false);
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, "TimerSet");*/
 
 	UnEquipWeapon(LastWeapon);
 
@@ -276,9 +284,9 @@ void AMLHeroCharacter::SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWea
 		CurrentWeapon = NewWeapon;
 		CurrentWeapon->SetOwningCharacter(this);
 		CurrentWeapon->Equip();
-		
-		ChangeLeftHandTransformInAnimBlueprint();
-		
+
+		FirstPersonMesh->LinkAnimClassLayers(CurrentWeapon->GetHeroFPAnimInstance());
+
 		UAnimMontage* Equip1PMontage = NewWeapon->GetEquipMontage();
 		if (Equip1PMontage && GetFirstPersonMesh())
 		{
@@ -295,6 +303,7 @@ void AMLHeroCharacter::UnEquipWeapon(AMLWeapon* WeaponToUnEquip)
 {
 	if (WeaponToUnEquip)
 	{
+		FirstPersonMesh->UnlinkAnimClassLayers(WeaponToUnEquip->GetHeroFPAnimInstance());
 		WeaponToUnEquip->UnEquip();
 	}
 }
@@ -304,3 +313,28 @@ void AMLHeroCharacter::UnEquipCurrentWeapon()
 	UnEquipWeapon(CurrentWeapon);
 	CurrentWeapon = nullptr;
 }
+
+/*void AMLHeroCharacter::SetCurrentWeaponAfterDelay(AMLWeapon* NewWeapon, AMLWeapon* LastWeapon)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, "TimerExecute");
+	UnEquipWeapon(LastWeapon);
+
+	if (NewWeapon)
+	{
+		// Controller changes
+
+		// TODO add support for AI
+
+		CurrentWeapon = NewWeapon;
+		CurrentWeapon->SetOwningCharacter(this);
+		CurrentWeapon->Equip();
+
+		FirstPersonMesh->LinkAnimClassLayers(CurrentWeapon->GetHeroFPAnimInstance());
+	}
+	else
+	{
+		UnEquipCurrentWeapon();
+	}
+
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+}*/

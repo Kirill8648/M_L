@@ -37,9 +37,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
 	virtual void PreviousWeapon();
 
-	UFUNCTION(BlueprintNativeEvent, Category="MercLife|Animation")
-	void ChangeLeftHandTransformInAnimBlueprint();
-
 	FName GetWeaponAttachPoint() const;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -56,6 +53,8 @@ public:
 
 protected:
 	//TEMPORARY
+	/*FTimerDelegate TimerDel;
+	FTimerHandle TimerHandle;*/
 	UPROPERTY()
 	AMLWeapon* CurrentWeapon;
 	UPROPERTY(BlueprintReadOnly, Category="MercLife|TEMPINVENTORY")
@@ -84,6 +83,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "MercLife|Camera")
 	float Default1PFOV;
+
+	UPROPERTY(BlueprintReadOnly, Category = "MercLife|Weapon")
+	float WeaponSwayMoveSide;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Merclife|MLHeroCharacter")
 	FName WeaponAttachPoint;
@@ -132,4 +134,6 @@ protected:
 	void UnEquipCurrentWeapon();
 
 	//void OnAbilityActivationFailed(const class UGameplayAbility* FailedAbility, const FGameplayTagContainer& FailTags);
+	/*UFUNCTION()
+	void SetCurrentWeaponAfterDelay(AMLWeapon* NewWeapon, AMLWeapon* LastWeapon);*/
 };

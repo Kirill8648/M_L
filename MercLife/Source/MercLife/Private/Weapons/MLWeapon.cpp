@@ -154,6 +154,11 @@ UAnimMontage* AMLWeapon::GetEquipMontage() const
 	return EquipMontage;
 }
 
+TSubclassOf<UAnimInstance> AMLWeapon::GetHeroFPAnimInstance() const
+{
+	return HeroFPAnimInstance;
+}
+
 void AMLWeapon::BeginPlay()
 {
 	Super::BeginPlay();

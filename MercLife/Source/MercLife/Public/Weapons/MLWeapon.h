@@ -53,6 +53,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MercLife|Animation")
 	UAnimMontage* GetEquipMontage() const;
 
+	UFUNCTION(BlueprintCallable, Category = "MercLife|Animation")
+	TSubclassOf<UAnimInstance> GetHeroFPAnimInstance() const;
+
 protected:
 	UPROPERTY()
 	UGASAbilitySystemComponent* AbilitySystemComponent;
@@ -78,6 +81,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
 	UAnimMontage* EquipMontage;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
+	TSubclassOf<UAnimInstance> HeroFPAnimInstance;
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;

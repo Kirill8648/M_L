@@ -154,6 +154,11 @@ UAnimMontage* AMLWeapon::GetEquipMontage() const
 	return EquipMontage;
 }
 
+UAnimMontage* AMLWeapon::GetUnEquipMontage() const
+{
+	return UnEquipMontage;
+}
+
 TSubclassOf<UAnimInstance> AMLWeapon::GetHeroFPAnimInstance() const
 {
 	return HeroFPAnimInstance;

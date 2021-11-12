@@ -281,17 +281,16 @@ void AMLHeroCharacter::SetCurrentWeapon(AMLWeapon* NewWeapon, AMLWeapon* LastWea
 
 		// TODO add support for AI
 
-		CurrentWeapon = NewWeapon;
-		CurrentWeapon->SetOwningCharacter(this);
-		CurrentWeapon->Equip();
-
-		FirstPersonMesh->LinkAnimClassLayers(CurrentWeapon->GetHeroFPAnimInstance());
-
 		UAnimMontage* Equip1PMontage = NewWeapon->GetEquipMontage();
 		if (Equip1PMontage && GetFirstPersonMesh())
 		{
 			GetFirstPersonMesh()->GetAnimInstance()->Montage_Play(Equip1PMontage);
 		}
+		CurrentWeapon = NewWeapon;
+		CurrentWeapon->SetOwningCharacter(this);
+		CurrentWeapon->Equip();
+
+		FirstPersonMesh->LinkAnimClassLayers(CurrentWeapon->GetHeroFPAnimInstance());
 	}
 	else
 	{

@@ -54,6 +54,9 @@ public:
 	UAnimMontage* GetEquipMontage() const;
 
 	UFUNCTION(BlueprintCallable, Category = "MercLife|Animation")
+	UAnimMontage* GetUnEquipMontage() const;
+
+	UFUNCTION(BlueprintCallable, Category = "MercLife|Animation")
 	TSubclassOf<UAnimInstance> GetHeroFPAnimInstance() const;
 
 protected:
@@ -81,6 +84,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
 	UAnimMontage* EquipMontage;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
+	UAnimMontage* UnEquipMontage;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
 	TSubclassOf<UAnimInstance> HeroFPAnimInstance;

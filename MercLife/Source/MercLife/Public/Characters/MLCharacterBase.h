@@ -50,14 +50,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
 	float GetHealthRegenRate() const;
 
-	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
+	/*UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
 	float GetStamina() const;
 
 	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
 	float GetMaxStamina() const;
 
 	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
-	float GetStaminaRegenRate() const;
+	float GetStaminaRegenRate() const;*/
 
 	// Gets the Current value of MoveSpeed
 	UFUNCTION(BlueprintCallable, Category = "MercLife|MLCharacterBase|Attributes")
@@ -115,5 +115,5 @@ protected:
 	*/
 
 	virtual void SetHealth(float Health);
-	virtual void SetStamina(float Stamina);
+	//virtual void SetStamina(float Stamina);
 };

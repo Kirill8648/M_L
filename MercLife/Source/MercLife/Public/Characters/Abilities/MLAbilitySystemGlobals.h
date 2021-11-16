@@ -27,11 +27,9 @@ public:
 	UPROPERTY()
 	FGameplayTag DeadTag;
 	UPROPERTY()
-	FGameplayTag NoWeaponTag;
-	UPROPERTY()
 	FGameplayTag WeaponAbilityTag;
-	UPROPERTY()
-	FGameplayTag AbilityJumpTag;
+	/*UPROPERTY()
+	FGameplayTag AbilityJumpTag;*/
 
 	/*UPROPERTY()
 	FGameplayTag NoWeaponTagLeftTag;

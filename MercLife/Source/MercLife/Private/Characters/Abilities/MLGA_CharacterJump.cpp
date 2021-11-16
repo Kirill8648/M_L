@@ -3,14 +3,14 @@
 
 #include "Characters/Abilities/MLGA_CharacterJump.h"
 
-#include "Characters/Abilities/MLAbilitySystemGlobals.h"
 #include "Characters/MLCharacterBase.h"
 
 UMLGA_CharacterJump::UMLGA_CharacterJump()
 {
 	AbilityInputID = EMLAbilityInputID::Jump;
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::NonInstanced;
-	AbilityTags.AddTag(UMLAbilitySystemGlobals::MLGet().AbilityJumpTag);
+	//AbilityTags.AddTag(UMLAbilitySystemGlobals::MLGet().AbilityJumpTag);
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag("Ability.Jump"));
 }
 
 void UMLGA_CharacterJump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,

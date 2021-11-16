@@ -15,9 +15,6 @@ AMLHeroCharacter::AMLHeroCharacter(const class FObjectInitializer& ObjectInitial
 	BaseLookUpRate = 45.0f;
 	bASCInputBound = false;
 	Default1PFOV = 90.0f;
-	CurrentWeaponRightTag = UMLAbilitySystemGlobals::MLGet().NoWeaponTag;
-	CurrentWeaponLeftTag = UMLAbilitySystemGlobals::MLGet().NoWeaponTag;
-	CurrentWeaponBothTag = UMLAbilitySystemGlobals::MLGet().NoWeaponTag;
 
 	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(FName("FirstPersonCamera"));
 	FirstPersonCamera->SetupAttachment(RootComponent);

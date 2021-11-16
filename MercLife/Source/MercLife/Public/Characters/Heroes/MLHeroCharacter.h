@@ -21,10 +21,6 @@ public:
 	// Sets default values for this character's properties
 	AMLHeroCharacter(const class FObjectInitializer& ObjectInitializer);
 
-	FGameplayTag CurrentWeaponRightTag;
-	FGameplayTag CurrentWeaponLeftTag;
-	FGameplayTag CurrentWeaponBothTag;
-
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category="MercLife|MLHeroCharacter")
 	USkeletalMeshComponent* GetFirstPersonMesh();
 
@@ -38,6 +34,9 @@ public:
 	virtual void PreviousWeapon();
 
 	FName GetWeaponAttachPoint() const;
+	
+	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
+	AMLWeapon* GetCurrentWeapon();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -59,8 +58,6 @@ protected:
 	AMLWeapon* CurrentWeapon;
 	UPROPERTY(BlueprintReadOnly, Category="MercLife|TEMPINVENTORY")
 	TArray<AMLWeapon*> Weapons;
-	UFUNCTION(BlueprintCallable, Category="MercLife|TEMPINVENTORY")
-	AMLWeapon* GetCurrentWeapon();
 
 	UPROPERTY(BlueprintReadOnly, Category = "MercLife|MLHeroCharacter")
 	FVector StartingThirdPersonMeshLocation;

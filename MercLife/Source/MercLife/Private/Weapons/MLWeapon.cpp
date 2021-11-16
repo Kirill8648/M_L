@@ -70,6 +70,31 @@ void AMLWeapon::Equip() //TODO add variation for AI
 		WeaponMesh->SetRelativeRotation(WeaponMeshEquippedRelativeRotation);
 		WeaponMesh->SetVisibility(true, true);
 	}
+
+
+	UAbilitySystemComponent* OwningCharacterASC = OwningCharacter->GetAbilitySystemComponent();
+	if (!IsValid(OwningCharacterASC))
+	{
+		return;
+	}
+
+	if (!DefaultSpread)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultSpread for %s. Please fill in the weapon's Blueprint."),
+		       *FString(__FUNCTION__), *GetName())
+		return;
+	}
+
+	// Can run on Server and Client
+	FGameplayEffectContextHandle EffectContext = OwningCharacterASC->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	//TODO change 1 to getLevel if we gonna have levels
+	FGameplayEffectSpecHandle GEHandle = OwningCharacterASC->MakeOutgoingSpec(DefaultSpread, 1, EffectContext);
+	if (GEHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = OwningCharacterASC->ApplyGameplayEffectSpecToSelf(*GEHandle.Data.Get());
+	}
 }
 
 void AMLWeapon::UnEquip() //TODO add variation for AI
@@ -82,6 +107,8 @@ void AMLWeapon::UnEquip() //TODO add variation for AI
 	//Detach for prevent unwanted unhides
 	WeaponMesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
 	WeaponMesh->SetVisibility(false, true);
+
+	OwningCharacter->GetAbilitySystemComponent()->RemoveActiveGameplayEffectBySourceEffect(DefaultSpread, nullptr, -1);
 }
 
 void AMLWeapon::AddAbilities()

@@ -83,6 +83,9 @@ protected:
 	TArray<TSubclassOf<UGASGameplayAbilityBase>> Abilities;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
+	TSubclassOf<class UGameplayEffect> DefaultSpread;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
 	UAnimMontage* EquipMontage;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")

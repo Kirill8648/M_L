@@ -89,7 +89,7 @@ float AMLCharacterBase::GetHealthRegenRate() const
 	return 0.0f;
 }
 
-float AMLCharacterBase::GetStamina() const
+/*float AMLCharacterBase::GetStamina() const
 {
 	if (IsValid(AttributeSetBase))
 	{
@@ -114,7 +114,7 @@ float AMLCharacterBase::GetStaminaRegenRate() const
 		return AttributeSetBase->GetStaminaRegenRate();
 	}
 	return 0.0f;
-}
+}*/
 
 float AMLCharacterBase::GetMoveSpeed() const
 {
@@ -217,10 +217,10 @@ void AMLCharacterBase::SetHealth(float Health)
 	}
 }
 
-void AMLCharacterBase::SetStamina(float Stamina)
+/*void AMLCharacterBase::SetStamina(float Stamina)
 {
 	if (IsValid(AttributeSetBase))
 	{
 		AttributeSetBase->SetStamina(Stamina);
 	}
-}
+}*/

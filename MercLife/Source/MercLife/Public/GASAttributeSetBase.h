@@ -38,7 +38,7 @@ public:
 	FGameplayAttributeData HealthRegenRate;
 	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, HealthRegenRate);
 
-	UPROPERTY(BlueprintReadOnly, Category="Stamina", ReplicatedUsing=OnRep_Stamina)
+	/*UPROPERTY(BlueprintReadOnly, Category="Stamina", ReplicatedUsing=OnRep_Stamina)
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, Stamina);
 
@@ -48,11 +48,19 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category="Stamina", ReplicatedUsing=OnRep_StaminaRegenRate)
 	FGameplayAttributeData StaminaRegenRate;
-	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, StaminaRegenRate);
+	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, StaminaRegenRate);*/
 
 	UPROPERTY(BlueprintReadOnly, Category="MoveSpeed", ReplicatedUsing=OnRep_MoveSpeed)
 	FGameplayAttributeData MoveSpeed;
 	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, MoveSpeed);
+
+	UPROPERTY(BlueprintReadOnly, Category="WeaponSpread", ReplicatedUsing=OnRep_MoveSpeed)
+	FGameplayAttributeData WeaponSpreadX;
+	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, WeaponSpreadX);
+
+	UPROPERTY(BlueprintReadOnly, Category="WeaponSpread", ReplicatedUsing=OnRep_MoveSpeed)
+	FGameplayAttributeData WeaponSpreadY;
+	ATTRIBUTE_ACCESSORS(UGASAttributeSetBase, WeaponSpreadY);
 
 protected:
 	UFUNCTION()
@@ -64,15 +72,21 @@ protected:
 	UFUNCTION()
 	virtual void OnRep_HealthRegenRate(const FGameplayAttributeData& OldHealthRegenRate);
 
-	UFUNCTION()
+	/*UFUNCTION()
 	virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
 
 	UFUNCTION()
 	virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
 
 	UFUNCTION()
-	virtual void OnRep_StaminaRegenRate(const FGameplayAttributeData& OldStaminaRegenRate);
+	virtual void OnRep_StaminaRegenRate(const FGameplayAttributeData& OldStaminaRegenRate);*/
 
 	UFUNCTION()
 	virtual void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
+
+	UFUNCTION()
+	virtual void OnRep_WeaponSpreadX(const FGameplayAttributeData& OldWeaponSpreadX);
+
+	UFUNCTION()
+	virtual void OnRep_WeaponSpreadY(const FGameplayAttributeData& OldWeaponSpreadY);
 };

@@ -12,9 +12,8 @@ void UMLAbilitySystemGlobals::InitGlobalTags()
 	Super::InitGlobalTags();
 
 	DeadTag = FGameplayTag::RequestGameplayTag("State.Dead");
-	NoWeaponTag = FGameplayTag::RequestGameplayTag("Weapon.Equipped.None");
 	WeaponAbilityTag = FGameplayTag::RequestGameplayTag("Ability.Weapon");
-	AbilityJumpTag = FGameplayTag::RequestGameplayTag("Ability.Jump");
+	//AbilityJumpTag = FGameplayTag::RequestGameplayTag("Ability.Jump");
 	/*NoWeaponTagLeftTag = FGameplayTag::RequestGameplayTag("Weapon.Equipped.Left.None");
 	NoWeaponTagBothTag = FGameplayTag::RequestGameplayTag("Weapon.Equipped.Both.None");*/
 }

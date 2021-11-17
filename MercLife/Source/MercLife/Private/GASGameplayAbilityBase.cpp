@@ -6,6 +6,8 @@
 
 UGASGameplayAbilityBase::UGASGameplayAbilityBase()
 {
+	// Default to Instance Per Actor
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	bSourceObjectMustEqualCurrentWeaponToActivate = false;
 }
 

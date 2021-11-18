@@ -3,6 +3,7 @@
 
 #include "Characters/Abilities/MLGA_CharacterJump.h"
 
+#include "AbilitySystemComponent.h"
 #include "Characters/MLCharacterBase.h"
 
 UMLGA_CharacterJump::UMLGA_CharacterJump()
@@ -11,6 +12,10 @@ UMLGA_CharacterJump::UMLGA_CharacterJump()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::NonInstanced;
 	//AbilityTags.AddTag(UMLAbilitySystemGlobals::MLGet().AbilityJumpTag);
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag("Ability.Jump"));
+	/*static ConstructorHelpers::FObjectFinder<UGameplayEffect> JumpGEFinder(TEXT("/Game/MercLife/Characters/MLHero/Abilities/GE_Jumping"));
+	JumpGE = JumpGEFinder.Object;*/
+	/*static ConstructorHelpers::FClassFinder<UGameplayEffect> JumpGEFinder1(TEXT("/Game/MercLife/Characters/MLHero/Abilities/GE_Jumping"));
+	JumpGETSub = JumpGEFinder1.Class;*/
 }
 
 void UMLGA_CharacterJump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -24,6 +29,11 @@ void UMLGA_CharacterJump::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		}
 
 		ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
+		/*UAbilitySystemComponent::ApplyGameplayEffectToOwner(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, JumpGE, 1, 1);
+		MakeOutgoingGameplayEffectSpec(JumpGETSub);
+		ActorInfo->AvatarActor->Getabili*/
+		//GetAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectToSelf(JumpGE,1,);
+		//ApplyGameplayEffectSpecToOwner(CurrentSpecHandle,CurrentActorInfo,CurrentActivationInfo,MakeOutgoingGameplayEffectSpec(JumpGETSub));
 		Character->Jump();
 	}
 }

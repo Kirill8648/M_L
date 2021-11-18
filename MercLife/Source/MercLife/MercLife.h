@@ -23,7 +23,7 @@ enum class EMLAbilityInputID : uint8
 	// 4 Sprint
 	Sprint UMETA(DisplayName = "Sprint"),
 
-	// 5 ADS
+	// 5 Aim Down Sights
 	AimDownSights UMETA(DisplayName = "Aim Down Sights"),
 
 	// 6 Primary Attack

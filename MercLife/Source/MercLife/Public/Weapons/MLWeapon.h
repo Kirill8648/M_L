@@ -92,6 +92,12 @@ protected:
 	UAnimMontage* UnEquipMontage;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
+	USoundBase* UnEquipSound;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
+	USoundBase* EquipSound;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "MercLife|MLWeapon")
 	TSubclassOf<UAnimInstance> HeroFPAnimInstance;
 
 	virtual void BeginPlay() override;

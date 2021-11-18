@@ -5,6 +5,7 @@
 #include "GASAbilitySystemComponent.h"
 #include "GASGameplayAbilityBase.h"
 #include "Characters/Heroes/MLHeroCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AMLWeapon::AMLWeapon()
@@ -78,6 +79,8 @@ void AMLWeapon::Equip() //TODO add variation for AI
 		return;
 	}
 
+	UGameplayStatics::PlaySound2D(GetWorld(), EquipSound);
+
 	if (!DefaultSpread)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultSpread for %s. Please fill in the weapon's Blueprint."),
@@ -107,6 +110,8 @@ void AMLWeapon::UnEquip() //TODO add variation for AI
 	//Detach for prevent unwanted unhides
 	WeaponMesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
 	WeaponMesh->SetVisibility(false, true);
+
+	UGameplayStatics::PlaySound2D(GetWorld(), UnEquipSound);
 
 	OwningCharacter->GetAbilitySystemComponent()->RemoveActiveGameplayEffectBySourceEffect(DefaultSpread, nullptr, -1);
 }
